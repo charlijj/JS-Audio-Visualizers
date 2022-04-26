@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <style>
+
+        .mainContainer {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: auto;
+        }
+
+        #mainCanvas {
+
+            width: 98%;
+            height: 80%;
+
+            margin: 0 auto;
+            
+            background-color: black;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="navBar">
+
+        <div class="fullScreenSelectContainer">
+            <a href="fullScreen.html">Full Screen</a>
+        </div>
+
+        <div class="visualizerSelectContainer">
+            <h3>Select Visualizer: &nbsp; </h3>
+            <select name="visualizer" id="visualizerSelect">
+                <option value="bar">Simple Bar</option>
+                <option value="rainbowBar">Rainbow Bar</option>
+                <option value="fullRainbowBar">Full Rainbow Bar</option>
+                <option value="iceBlueMirror">Ice Blue Mirror</option>
+                <option value="fireRedMirror">Fire Red Mirror</option>
+                <option value="hollowMirror">Hollow Bar Mirror</option>
+                <option value="pulsingCircle">Pulsing Purple Circle</option>
+                <option value="pulsingRainbowCircle">Pulsing Rainbow Circle</option>
+                <option value="rainbowSpiral">Rainbow Spiral</option>
+                <option value="sensoryOverload">Sensory Overload</option>
+                <option value="line">Line Graph</option>
+            </select>
+        </div>
+
+        <div class="visualizerSelectContainer">
+            <input id="startRecording" type="button" value="Start Listening">
+        </div>
+
+    </div>
+
+
+    <div class="mainContainer">
+        <canvas id="mainCanvas"></canvas>
+    </div>
+
+
+    <div class="footer">
+        <div class="about">
+            <p>About: </p><p>&nbsp;This idea started when I was looking for audio visualizer websites that I could run on my raspberry pie, and to my dismay I found a lack of results. Thus I went on to create my own solution, behold audio visualizers that are generated from the microphone input on you device. </p>
+        </div>
+        <div class="contactInfo">
+            <p>Github: charlijj</p>
+        </div>
+        <div class="contactInfo">
+            <p>LinkedIn: </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+
+</body>
+</html>
