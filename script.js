@@ -98,6 +98,12 @@ function playVisualizer() {
         case `sensoryOverload`:
             animateSensoryOverload();
             break;
+        case `wormHole`:
+            animateWormHole();
+            break;
+        case `space`:
+            animateSpace();
+            break;
         case `line`:
             animateLine();
             break;
@@ -401,54 +407,20 @@ function playVisualizer() {
             ctx.rotate(i + Math.PI/2);
             ctx.fillStyle = `red`;
             ctx.fillRect(0, 0, barWidth, barHeight);
-            x += barWidth;
-            ctx.restore();
-        }
-        
-        for (let i = 0; i < bufferLen; i++)
-        {
-            barHeight = dataArray[i]*2;
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(i + Math.PI/2);
             ctx.fillStyle = `blue`;
             ctx.fillRect(20, 20, barWidth, barHeight);
-            x += barWidth;
-            ctx.restore();
-        }
-
-        for (let i = 0; i < bufferLen; i++)
-        {
-            barHeight = dataArray[i]*2;
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(i + Math.PI/2);
             ctx.fillStyle = `green`;
             ctx.fillRect(40, 40, barWidth, barHeight);
-            x += barWidth;
-            ctx.restore();
-        }
-
-        for (let i = 0; i < bufferLen; i++)
-        {
-            barHeight = dataArray[i]*2;
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(i + Math.PI/2);
             ctx.fillStyle = `#eeff00`;
             ctx.fillRect(60, 60, barWidth, barHeight);
-            x += barWidth;
-            ctx.restore();
-        }
-
-        for (let i = 0; i < bufferLen; i++)
-        {
-            barHeight = dataArray[i]*2;
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(i + Math.PI/2);
             ctx.fillStyle = `#ff3399`;
             ctx.fillRect(80, 80, barWidth, barHeight);
+            ctx.fillStyle = `#00FF00`;
+            ctx.fillRect(105, 105, barWidth/2, barHeight/2);
+            ctx.fillStyle = `##00FF7F`;
+            ctx.fillRect(115, 115, barWidth/3, barHeight/3);
+            ctx.fillStyle = `#8A2BE2`;
+            ctx.fillRect(125, 125, barWidth/2, barHeight/2);
             x += barWidth;
             ctx.restore();
         }
@@ -457,6 +429,80 @@ function playVisualizer() {
     }
 
     
+    function animateWormHole() {
+
+        analyser.fftSize = 256;
+        const barWidth = canvas.width / bufferLen;
+        let barHeight;
+        let x = 0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        analyser.getByteFrequencyData(dataArray);
+        for (let i = 0; i < bufferLen; i++)
+        {
+            barHeight = dataArray[i]*2;
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            const hue = i * 10;
+            ctx.fillStyle = `hsl(` + hue + `,100%, 50%)`;
+            ctx.lineWidth = 12;
+            ctx.beginPath();
+            ctx.arc(0, 0, barHeight, 0, Math.PI *2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            x += barWidth;
+            ctx.restore();
+        }     
+        requestAnimationFrame(animateWormHole);
+    }
+
+    function animateSpace() {
+
+        analyser.fftSize = 256;
+        const barWidth = canvas.width / bufferLen;
+        let barHeight;
+        let x = 0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        analyser.getByteFrequencyData(dataArray);
+
+        for (let i = 0; i < bufferLen; i++)
+        {
+            barHeight = dataArray[i]*2;
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            const red = barHeight;
+            const green = barHeight/3;
+            const blue = barHeight/i;
+            ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
+            ctx.lineWidth = 12;
+            ctx.beginPath();
+            ctx.arc(0, 0, barHeight/3, 0, Math.PI *2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            x += barWidth;
+            ctx.restore();
+        }  
+
+        for (let i = 0; i < bufferLen; i++)
+        {
+            barHeight = dataArray[i]*2;
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.rotate(i * Math.PI * 50 / bufferLen);
+            const red = barHeight;
+            const green = barHeight/3;
+            const blue = barHeight/i;
+            ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
+            ctx.fillRect(0, 0, barWidth, barHeight);
+            x += barWidth;
+            ctx.restore();
+        }  
+
+        requestAnimationFrame(animateSpace);
+    }
+
+
     function animateLine() {
         const barWidth = canvas.width / bufferLen;
         let barHeight;
