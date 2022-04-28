@@ -1,3 +1,5 @@
+// Jasper Charlinski
+
 let canvas = document.getElementById(`mainCanvas`);
 let ctx = canvas.getContext(`2d`);
 
@@ -6,20 +8,27 @@ canvas.height = window.innerHeight;
 
 // --------------------------------------------------------------
 
-let visualizer = document.getElementById(`visualizerSelect`);
-
-if (visualizer != null)
-{
-    visualizer.value = window.localStorage.getItem(`visualizerOption`);
-    window.localStorage.setItem(`visualizerOption`, visualizer.value);
-    visualizer.addEventListener(`change`, function () {window.localStorage.setItem(`visualizerOption`, visualizer.value);});
-}
 
 let recordButton = document.getElementById('startRecording');
 
 if (recordButton != null)
 {
     recordButton.addEventListener(`click`, playVisualizer);
+}
+
+let visualizer = document.getElementById(`visualizerSelect`);
+
+if (visualizer != null)
+{
+    visualizer.value = window.localStorage.getItem(`visualizerOption`);
+    window.localStorage.setItem(`visualizerOption`, visualizer.value);
+    visualizer.addEventListener(`change`, function () {
+        
+        window.localStorage.setItem(`visualizerOption`, visualizer.value);
+
+        
+
+    });
 }
 
 function playVisualizer() {
@@ -104,6 +113,15 @@ function playVisualizer() {
         case `space`:
             animateSpace();
             break;
+        case `movingVortex`:
+            animateMovingVortex();
+            break;
+        case `spiralingSquares`:
+            animateSpiralingSquares();
+            break;
+        case `overlappingSquares`:
+            animateOverlappingSquares();
+            break;
         case `line`:
             animateLine();
             break;
@@ -172,11 +190,9 @@ function playVisualizer() {
         {
             barHeight = dataArray[i]*3;
 
-            const red = barHeight / i;
-            const green = i * 4;
-            const blue = barHeight/2;
+            const hue = i * 3;
+            ctx.fillStyle = `hsl(` + hue + `,100%, 50%)`;
 
-            ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
             ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
             x += barWidth + 5;
 
@@ -314,7 +330,6 @@ function playVisualizer() {
     function animatePulsingCircle() {
         const barWidth = canvas.width / bufferLen;
         let barHeight;
-        let x = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
         for (let i = 0; i < bufferLen; i++)
@@ -330,7 +345,6 @@ function playVisualizer() {
             barHeight = dataArray[i]*3;
             ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
             ctx.fillRect(0, 0, barWidth, barHeight);
-            x += barWidth + 5;
             ctx.restore();
         }
         
@@ -341,7 +355,6 @@ function playVisualizer() {
         const barWidth = canvas.width / bufferLen;
         let barHeight;
         let colorHeight = 100;
-        let x = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
         for (let i = 0; i < bufferLen; i++)
@@ -360,7 +373,6 @@ function playVisualizer() {
             ctx.fillRect(0, colorHeight*3, barWidth, barHeight);
             ctx.fillStyle = `purple`;
             ctx.fillRect(0, colorHeight*4, barWidth, barHeight);
-            x += barWidth;
             ctx.restore();
         }
         
@@ -372,7 +384,6 @@ function playVisualizer() {
         analyser.fftSize = 256;
         const barWidth = canvas.width / bufferLen;
         let barHeight;
-        let x = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
         for (let i = 0; i < bufferLen; i++)
@@ -384,7 +395,6 @@ function playVisualizer() {
             const hue = i * 10;
             ctx.fillStyle = `hsl(` + hue + `,100%, 50%)`;
             ctx.fillRect(0, 0, barWidth, barHeight);
-            x += barWidth;
             ctx.restore();
         }
         
@@ -396,7 +406,6 @@ function playVisualizer() {
         analyser.fftSize = 256;
         const barWidth = canvas.width / bufferLen;
         let barHeight;
-        let x = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
         for (let i = 0; i < bufferLen; i++)
@@ -421,14 +430,12 @@ function playVisualizer() {
             ctx.fillRect(115, 115, barWidth/3, barHeight/3);
             ctx.fillStyle = `#8A2BE2`;
             ctx.fillRect(125, 125, barWidth/2, barHeight/2);
-            x += barWidth;
             ctx.restore();
         }
         
         requestAnimationFrame(animateSensoryOverload);
     }
 
-    
     function animateWormHole() {
 
         analyser.fftSize = 256;
@@ -461,7 +468,6 @@ function playVisualizer() {
         analyser.fftSize = 256;
         const barWidth = canvas.width / bufferLen;
         let barHeight;
-        let x = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
 
@@ -475,12 +481,15 @@ function playVisualizer() {
             const blue = barHeight/i;
             ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
             ctx.lineWidth = 12;
+            ctx.rotate(i * Math.PI * 100 / barHeight);
+            ctx.fillStyle = `white`;
+            ctx.fillRect(barHeight,barHeight, barWidth/2, barHeight/8);
+            ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
             ctx.beginPath();
             ctx.arc(0, 0, barHeight/3, 0, Math.PI *2);
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
-            x += barWidth;
             ctx.restore();
         }  
 
@@ -495,11 +504,91 @@ function playVisualizer() {
             const blue = barHeight/i;
             ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
             ctx.fillRect(0, 0, barWidth, barHeight);
-            x += barWidth;
             ctx.restore();
         }  
 
         requestAnimationFrame(animateSpace);
+    }
+
+    function animateMovingVortex() {
+
+        const barWidth = canvas.width / bufferLen;
+        let barHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        analyser.getByteFrequencyData(dataArray);
+
+
+        for (let i = 0; i < bufferLen; i++)
+        {
+            barHeight = dataArray[i]*2;
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.rotate(i * Math.PI * 50 / bufferLen);
+            const red = 100;
+            const green = barHeight/2;
+            const blue = i;
+            ctx.fillStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
+            ctx.fillRect(barHeight, barHeight, barWidth, barHeight);
+            ctx.fillRect(barHeight - i,barHeight - i, barWidth, barHeight/8);
+
+            ctx.rotate(barHeight/100);
+            ctx.fillRect(0,0, barWidth, barHeight/4);
+            ctx.restore();
+        }
+        
+        requestAnimationFrame(animateMovingVortex);
+    }
+
+    function animateSpiralingSquares() {
+
+        const barWidth = canvas.width / bufferLen;
+        let barHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        analyser.getByteFrequencyData(dataArray);
+
+
+        for (let i = 0; i < bufferLen; i++)
+        {
+            barHeight = dataArray[i];
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.rotate(i * Math.PI * 50 / bufferLen);
+            const red = 100;
+            const green = barHeight/2;
+            const blue = i;
+
+            ctx.strokeStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
+            ctx.strokeRect(i, i, barHeight, barHeight);
+            ctx.restore();
+        }
+        
+        requestAnimationFrame(animateSpiralingSquares);
+    }
+
+    function animateOverlappingSquares() {
+
+        const barWidth = canvas.width / bufferLen;
+        let barHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        analyser.getByteFrequencyData(dataArray);
+
+
+        for (let i = 0; i < bufferLen; i++)
+        {
+            barHeight = dataArray[i]*3;
+            ctx.save();
+            ctx.translate(canvas.width/2 - barHeight/2, canvas.height/2 - barHeight/2);
+            
+            const red = 100;
+            const green = barHeight/2;
+            const blue = i;
+
+            ctx.strokeStyle = `rgb(`+ red + `,` + green + `,` + blue + `)`;
+            ctx.strokeRect(0, 0, barHeight, barHeight);
+            ctx.restore();
+        }
+        
+        requestAnimationFrame(animateOverlappingSquares);
     }
 
 
