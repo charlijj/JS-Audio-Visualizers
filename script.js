@@ -37,6 +37,10 @@ function playVisualizer() {
 
     let analyser = audioCtx.createAnalyser();
 
+    const audio = new Audio(`song.mp3`);
+    let audioSource = audioCtx.createMediaElementSource(audio);
+    audioSource.connect(analyser);
+
     //An unsigned integer, representing the window size of the FFT, given in number of samples. 
     //A higher value will result in more details in the frequency domain but fewer details in the time domain.
     // Must be a power of 2 (up to 2^15)
@@ -47,28 +51,43 @@ function playVisualizer() {
     const dataArray = new Uint8Array(bufferLen);
 
     let stop;
-    navigator.mediaDevices.getUserMedia({"audio": true}).then((stream) => {
 
-        const microphone = audioCtx.createMediaStreamSource(stream);
+    if (navigator.mediaDevices) {
 
-        if (recordButton.value == "Start Listening")
-        {
-            recordButton.value = "Stop Listening";
-            recordButton.style.backgroundColor = `red`;
-            recordButton.style.borderRadius = 0;
-            microphone.connect(analyser);
-        }
-        else
-        {
-            recordButton.value = "Start Listening";
-            recordButton.style.backgroundColor = `white`;
-            microphone.disconnect();
-            delete dataArray;
-            delete audioCtx;
-            window.location.reload();
-            stop = true;
-        }
-    });
+        navigator.mediaDevices.getUserMedia({"audio": true}).then((stream) => {
+
+            const microphone = audioCtx.createMediaStreamSource(stream);
+    
+            if (recordButton.value == "Start Listening")
+            {
+                recordButton.value = "Stop Listening";
+                recordButton.style.backgroundColor = `red`;
+                recordButton.style.borderRadius = 0;
+                microphone.connect(analyser);
+            }
+            else
+            {
+                recordButton.value = "Start Listening";
+                recordButton.style.backgroundColor = `white`;
+                microphone.disconnect();
+                delete dataArray;
+                delete audioCtx;
+                window.location.reload();
+                stop = true;
+            }
+        }).catch((err) => {
+            
+            alert(`Could not access microphone\nMake sure it is connected properly`);
+            audio.play();
+          });
+
+    }
+    else
+    {
+        alert(`Could not access microphone\nMake sure it is connected properly`);
+        audio.play();
+
+    }
 
     if (stop)
     {
