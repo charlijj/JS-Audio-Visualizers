@@ -15,4 +15,4 @@
 
 <br />
 
-<h3 align="center">Licence: Apache License 2.0</h3>
+<h3 align="center">Licence: GNU General Public License v3.0</h3>
