@@ -8,7 +8,6 @@
 
 <br />
 
-
 <h3 align="center">How to use: </h3>
 <p align="center">Make sure you have a microphone avalibe.</p>
 <p align="center">Visit: <a href="https://charlijj.github.io/JS-Audio-Visualizers/">https://charlijj.github.io/JS-Audio-Visualizers/</a></p>
@@ -19,9 +18,9 @@
 
 <br />
 
-<h3 align="center">Built With: </h3>
+<h3>Built With: </h3>
 
-<ul align="center">
+<ul>
   <li>JavaScript - Canvas API</li>
   <li>JavaScript - WebAudio API</li>
   <li>HTML</li>
