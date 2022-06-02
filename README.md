@@ -29,7 +29,7 @@
 
 <br />
 
-<h3 align="center">Licence: Apache License 2.0</h3>
+<h3>Licence: Apache License 2.0</h3>
 <p>Copyright 2022 Jasper Charlinski</p>
 <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
 <p>Link to License: <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
