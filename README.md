@@ -9,12 +9,12 @@
 <br />
 
 <h3 align="center">How to use: </h3>
-<p align="center">Make sure you have a microphone avalibe.</p>
+<p align="center">Make sure you have a microphone available.</p>
 <p align="center">Visit: <a href="https://charlijj.github.io/JS-Audio-Visualizers/">https://charlijj.github.io/JS-Audio-Visualizers/</a></p>
 <p align="center">Select a visualizer using the drop-down menu.</p>
 <p align="center">Click the start listening button on the top right of the page.</p>
-<p align="center">Allow your browser to acsess your microphone.</p>
-<p align="center">Generate noise to active the visualizer.</p>
+<p align="center">Allow your browser to access your microphone.</p>
+<p align="center">Generate noise to activate the visualizer.</p>
 
 <br />
 
